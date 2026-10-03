@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transactions — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/transactions.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -30,18 +31,113 @@
       <div class="page-header">
         <div>
           <h1>Transactions</h1>
-          <p class="page-header__sub">Log income and expenses — built in Module 2.</p>
+          <p class="page-header__sub">Log income and expanses.</p>
         </div>
+        <button class="btn btn--primary" id="open-add-transaction">+ Add transaction</button>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Add, search, filter, and sort transactions here.
+      <div class="no-accounts-notice" id="no-accounts-notice" hidden>
+        You need an account before you can log a transaction.
+        <a href="accounts.html">Create one on the Accounts page →</a>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="search-input" class="toolbar__search" placeholder="Search transactions…" />
+        <select id="category-filter" class="toolbar__select">
+          <option value="all">All categories</option>
+        </select>
+        <select id="sort-select" class="toolbar__select">
+          <option value="date-desc">Newest first</option>
+          <option value="date-asc">Oldest first</option>
+          <option value="amount-desc">Amount: high to low</option>
+          <option value="amount-asc">Amount: low to high</option>
+          <option value="name-asc">Name: A–Z</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="txn-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Account</th>
+              <th class="txn-table__amount-col">Amount</th>
+              <th class="txn-table__actions-col"></th>
+            </tr>
+          </thead>
+          <tbody id="txn-table-body">
+            <!-- Rows rendered by js/pages/transactions.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <strong>No transactions yet</strong>
+        Every expense and payment you log will appear here.
       </div>
     </main>
   </div>
 
+  <!-- Add / edit transaction modal -->
+  <div class="modal-overlay" id="txn-modal" hidden>
+    <div class="modal">
+      <h2 id="txn-modal-title">Add transaction</h2>
+      <form id="txn-form" novalidate>
+        <input type="hidden" id="txn-id" />
+
+        <div class="type-toggle" role="radiogroup" aria-label="Transaction type">
+          <button type="button" class="type-toggle__option is-active" data-type="expense">Expense</button>
+          <button type="button" class="type-toggle__option" data-type="income">Income</button>
+        </div>
+
+        <div class="field" id="field-txn-name">
+          <label for="txn-name">Name</label>
+          <input type="text" id="txn-name" placeholder="e.g. Groceries" autocomplete="off" />
+          <span class="field__error">Give this transaction a name.</span>
+        </div>
+
+        <div class="field" id="field-txn-amount">
+          <label for="txn-amount">Amount</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="txn-amount" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter an amount greater than 0.</span>
+        </div>
+
+        <div class="field" id="field-txn-category">
+          <label for="txn-category">Category</label>
+          <select id="txn-category"></select>
+        </div>
+
+        <div class="field" id="field-txn-account">
+          <label for="txn-account">Account</label>
+          <select id="txn-account"></select>
+          <span class="field__error">Create an account first.</span>
+        </div>
+
+        <div class="field" id="field-txn-date">
+          <label for="txn-date">Date</label>
+          <input type="date" id="txn-date" />
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-txn">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="save-txn">Add transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/data/storage.js"></script>
+  <script src="js/data/categories.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/data/transactions.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/pages/transactions.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

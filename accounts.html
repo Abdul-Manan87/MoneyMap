@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +11,7 @@
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/pages/accounts.css" />
 </head>
+
 <body>
   <div class="app-shell">
 
@@ -31,7 +33,7 @@
       <div class="page-header">
         <div>
           <h1>Accounts</h1>
-          <p class="page-header__sub">Add an account and start tracking what you have.</p>
+          <p class="page-header__sub">Add an Account and start tracking what you have.</p>
         </div>
         <button class="btn btn--primary" id="open-create-account">+ New account</button>
       </div>
@@ -42,12 +44,12 @@
       </div>
 
       <div class="account-grid" id="account-grid">
-        <!-- Account cards are shown by js/pages/accounts.js -->
+        <!-- Account cards are rendered here by js/pages/accounts.js -->
       </div>
 
       <div class="empty-state" id="empty-state" hidden>
         <strong>No accounts yet</strong>
-        Add your first account to start tracking your money.
+        Create your first account and add some money to get started.
       </div>
     </main>
   </div>
@@ -118,4 +120,5 @@
   <script src="js/pages/accounts.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>

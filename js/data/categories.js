@@ -1,8 +1,6 @@
-/* MoneyMap — categories.js
-   One shared list of categories so Transactions, Budgets, and Analytics
-   (Modules 2, 3, 5) all use the exact same names — a Budget for "Food"
-   only works if Transactions uses the category "Food" too.
-   */
+/* 
+   MoneyMap — categories.js
+    */
 
 const EXPENSE_CATEGORIES = [
   'Food',

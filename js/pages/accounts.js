@@ -1,8 +1,5 @@
-/*
+/* 
    MoneyMap — accounts.js (page logic)
-   Renders the Accounts page and wires up the two modals: "New account"
-   and "Add money". All actual data changes go through js/data/accounts.js
-   — this file only handles the UI.
    */
 
 document.addEventListener('DOMContentLoaded', () => {

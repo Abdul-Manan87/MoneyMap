@@ -1,7 +1,7 @@
-/* ==========================================================================
+/* 
    MoneyMap — formatCurrency.js
    One formatting function so every page displays money the same way.
-   ========================================================================== */
+   */
 
 function formatCurrency(amount, currency = getCurrentCurrency()) {
   const value = Number(amount) || 0;

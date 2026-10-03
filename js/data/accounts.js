@@ -1,12 +1,5 @@
-/* MoneyMap — accounts.js (data layer)
-   An Account is where the user's money lives — like a bank. The user
-   manually adds money into it; every other module (transactions, budgets,
-   pots, overview, analytics) reads from here but never edits balance
-   directly. That rule lives entirely in this file.
-
-   NOTE: from Module 2 onward, addMoney() and spendFromAccount() will be
-   called internally by transactions.js so every balance change is backed
-   by a transaction record. Module 1 they adjust balance directly.
+/* 
+   MoneyMap — accounts.js (data layer)
    */
 
 const ACCOUNTS_KEY = 'accounts';
@@ -41,9 +34,9 @@ function createAccount({ name, type, startingBalance }) {
   return newAccount;
 }
 
-/**
- * Add money into an existing account (a deposit).
- * This is the "add money like a bank" action.
+/*
+Add money into an existing account (a deposit).
+This is the "add money like a bank" action.
  */
 function addMoney(accountId, amount) {
   const accounts = getAccounts();
@@ -55,9 +48,9 @@ function addMoney(accountId, amount) {
   return account;
 }
 
-/**
- * Deduct money from an account. Exposed now so Module 2's transactions.js
- * can call it the moment a spend transaction is logged.
+/*
+  Deduct money from an account. Exposed now so Module 2's transactions.js
+  can call it the moment a spend transaction is logged.
  */
 function spendFromAccount(accountId, amount) {
   const accounts = getAccounts();
@@ -84,8 +77,8 @@ function deleteAccount(accountId) {
   writeCollection(ACCOUNTS_KEY, accounts);
 }
 
-/**
- * Total balance across every account — what Overview will display.
+/*
+  Total balance across every account — what Overview will display.
  */
 function getTotalBalance() {
   return roundMoney(getAccounts().reduce((sum, a) => sum + a.balance, 0));
