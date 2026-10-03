@@ -1,0 +1,112 @@
+   /* MoneyMap — base.css
+   Reset, typography, and colors*/
+
+   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+   :root {
+     /* Color tokens — light mode (default) */
+     --bg: #f7f6f2;
+     --surface: #ffffff;
+     --surface-sunken: #f0efe9;
+     --border: #e1ded4;
+     --ink: #16211d;
+     --ink-muted: #666f6a;
+     --accent: #1f6f54;
+     --accent-soft: #e6f0ea;
+     --accent-ink: #ffffff;
+     --negative: #af4a2f;
+     --negative-soft: #f7e9e4;
+     --focus-ring: #1f6f54;
+
+     /* Type */
+     --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+     --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+     /* Spacing scale */
+     --space-1: 4px;
+     --space-2: 8px;
+     --space-3: 12px;
+     --space-4: 16px;
+     --space-5: 24px;
+     --space-6: 32px;
+     --space-7: 48px;
+
+     --radius: 10px;
+     --radius-sm: 6px;
+   }
+
+   * {
+     box-sizing: border-box;
+   }
+
+   html,
+   body {
+     height: 100%;
+   }
+
+   body {
+     margin: 0;
+     background: var(--bg);
+     color: var(--ink);
+     font-family: var(--font-body);
+     font-size: 15px;
+     line-height: 1.5;
+     -webkit-font-smoothing: antialiased;
+   }
+
+   h1,
+   h2,
+   h3,
+   h4 {
+     font-family: var(--font-display);
+     font-weight: 600;
+     margin: 0;
+     color: var(--ink);
+   }
+
+   p {
+     margin: 0;
+   }
+
+   a {
+     color: inherit;
+     text-decoration: none;
+   }
+
+   ul {
+     margin: 0;
+     padding: 0;
+     list-style: none;
+   }
+
+   button,
+   input,
+   select {
+     font-family: inherit;
+     font-size: inherit;
+     color: inherit;
+   }
+
+   button {
+     cursor: pointer;
+   }
+
+   :focus-visible {
+     outline: 2px solid var(--focus-ring);
+     outline-offset: 2px;
+   }
+
+   .num {
+     font-family: var(--font-display);
+     font-variant-numeric: tabular-nums;
+   }
+
+   @media (prefers-reduced-motion: reduce) {
+
+     *,
+     *::before,
+     *::after {
+       animation-duration: 0.01ms !important;
+       transition-duration: 0.01ms !important;
+     }
+   }

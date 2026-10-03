@@ -1,0 +1,166 @@
+/* MoneyMap — transactions.css (page-specific) */
+
+.no-accounts-notice {
+  background: var(--negative-soft);
+  color: var(--negative);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  font-size: 14px;
+  margin-bottom: var(--space-5);
+}
+
+.no-accounts-notice a {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ---- Toolbar ---- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.toolbar__search {
+  flex: 1 1 220px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.toolbar__select {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* ---- Table ---- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.txn-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.txn-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-sunken);
+}
+
+.txn-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.txn-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.txn-table__amount-col {
+  text-align: right;
+}
+
+.txn-table__actions-col {
+  width: 90px;
+}
+
+.txn-amount {
+  font-family: var(--font-display);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.txn-amount--income {
+  color: var(--accent);
+}
+
+.txn-amount--expense {
+  color: var(--negative);
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+}
+
+.row-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.row-actions button {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--ink-muted);
+  padding: 2px 4px;
+}
+
+.row-actions button:hover {
+  color: var(--ink);
+}
+
+.row-actions button.danger:hover {
+  color: var(--negative);
+}
+
+/* ---- Type toggle (Expense / Income) in the modal ---- */
+.type-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+}
+
+.type-toggle__option {
+  flex: 1;
+  padding: 10px;
+  background: var(--surface);
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.type-toggle__option.is-active[data-type="expense"] {
+  background: var(--negative-soft);
+  color: var(--negative);
+}
+
+.type-toggle__option.is-active[data-type="income"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  .toolbar {
+    flex-direction: column;
+  }
+
+  .toolbar__search,
+  .toolbar__select {
+    width: 100%;
+  }
+}

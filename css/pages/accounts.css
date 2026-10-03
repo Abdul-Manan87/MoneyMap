@@ -1,0 +1,6 @@
+/* MoneyMap — accounts.css (page-specific tweaks) */
+
+.account-card[data-type="bank"] { --accent-card: #1f6f54; }
+.account-card[data-type="savings"] { --accent-card: #2f6fa8; }
+.account-card[data-type="cash"] { --accent-card: #a87d2f; }
+.account-card[data-type="credit"] { --accent-card: #8a4fae; }

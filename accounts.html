@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accounts — MoneyMap</title>
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/accounts.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <nav class="sidebar">
+      <div class="sidebar__brand"><img src="assets/images/MoneyMap_logo.png" alt="MoneyMap logo" /></div>
+      <ul class="sidebar__nav">
+        <li><a class="sidebar__link" href="overview.html">Overview</a></li>
+        <li><a class="sidebar__link" href="accounts.html">Accounts</a></li>
+        <li><a class="sidebar__link" href="transactions.html">Transactions</a></li>
+        <li><a class="sidebar__link" href="budgets.html">Budgets</a></li>
+        <li><a class="sidebar__link" href="pots.html">Pots</a></li>
+        <li><a class="sidebar__link" href="bills.html">Recurring Bills</a></li>
+        <li><a class="sidebar__link" href="analytics.html">Analytics</a></li>
+        <li><a class="sidebar__link" href="settings.html">Settings</a></li>
+      </ul>
+    </nav>
+
+    <main class="main">
+      <div class="page-header">
+        <div>
+          <h1>Accounts</h1>
+          <p class="page-header__sub">Add an account and start tracking what you have.</p>
+        </div>
+        <button class="btn btn--primary" id="open-create-account">+ New account</button>
+      </div>
+
+      <div class="summary-strip">
+        <span class="summary-strip__label">Total across all accounts</span>
+        <span class="summary-strip__value num" id="total-balance">$0.00</span>
+      </div>
+
+      <div class="account-grid" id="account-grid">
+        <!-- Account cards are shown by js/pages/accounts.js -->
+      </div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <strong>No accounts yet</strong>
+        Add your first account to start tracking your money.
+      </div>
+    </main>
+  </div>
+
+  <!-- Create account modal -->
+  <div class="modal-overlay" id="create-modal" hidden>
+    <div class="modal">
+      <h2>New account</h2>
+      <form id="create-account-form" novalidate>
+        <div class="field" id="field-name">
+          <label for="acc-name">Account name</label>
+          <input type="text" id="acc-name" placeholder="e.g. Main Account" autocomplete="off" />
+          <span class="field__error">Give this account a name.</span>
+        </div>
+
+        <div class="field" id="field-type">
+          <label for="acc-type">Type</label>
+          <select id="acc-type">
+            <option value="bank">Bank</option>
+            <option value="cash">Cash</option>
+            <option value="savings">Savings</option>
+            <option value="credit">Credit</option>
+          </select>
+        </div>
+
+        <div class="field" id="field-balance">
+          <label for="acc-balance">Starting balance</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="acc-balance" placeholder="0.00" min="0" step="0.01" />
+          </div>
+          <span class="field__error">Enter an amount of 0 or more.</span>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-create">Cancel</button>
+          <button type="submit" class="btn btn--primary">Create account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add money modal -->
+  <div class="modal-overlay" id="add-money-modal" hidden>
+    <div class="modal">
+      <h2>Add money to <span id="add-money-account-name"></span></h2>
+      <form id="add-money-form" novalidate>
+        <div class="field" id="field-amount">
+          <label for="add-amount">Amount to add</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="add-amount" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter an amount greater than 0.</span>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-add-money">Cancel</button>
+          <button type="submit" class="btn btn--primary">Add money</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/data/storage.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/pages/accounts.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
