@@ -158,7 +158,6 @@
   .toolbar {
     flex-direction: column;
   }
-
   .toolbar__search,
   .toolbar__select {
     width: 100%;

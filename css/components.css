@@ -1,6 +1,7 @@
-/* MoneyMap — components.css
+/* ==========================================================================
+   MoneyMap — components.css
    Reusable UI primitives
-  */
+   ========================================================================== */
 
 /* ---- Buttons ---- */
 .btn {
@@ -235,6 +236,37 @@
   justify-content: flex-end;
   gap: var(--space-3);
   margin-top: var(--space-5);
+}
+
+/* ---- Progress bar (Budgets, Pots, Overview) ---- */
+.progress-bar {
+  background: var(--surface-sunken);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+
+.progress-bar__fill.is-warning {
+  background: #c9962f;
+}
+
+.progress-bar__fill.is-danger {
+  background: var(--negative);
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: var(--space-2);
 }
 
 /* ---- Responsive (phones) ---- */

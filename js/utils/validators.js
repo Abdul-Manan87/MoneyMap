@@ -1,6 +1,8 @@
-/* 
+/* ==========================================================================
    MoneyMap — validators.js
-   */
+   Small, reusable input checks. Every page's *.js file uses these before
+   writing anything to storage.
+   ========================================================================== */
 
 function isRequired(value) {
   return typeof value === 'string' ? value.trim().length > 0 : value !== null && value !== undefined;
@@ -11,9 +13,9 @@ function isPositiveNumber(value) {
   return !Number.isNaN(n) && n > 0;
 }
 
-/*
-  Shows/hides the .field__error message under an input and toggles the
-  .has-error class used by components.css.
+/**
+ * Shows/hides the .field__error message under an input and toggles the
+ * .has-error class used by components.css.
  */
 function setFieldError(fieldEl, message) {
   const errorEl = fieldEl.querySelector('.field__error');

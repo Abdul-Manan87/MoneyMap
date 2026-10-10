@@ -1,7 +1,7 @@
-/* 
+/* ==========================================================================
    MoneyMap — main.js
-   Runs on every page
-   */
+   Runs on every page: highlights the active nav link.
+   ========================================================================== */
 
 (function highlightActiveNavLink() {
   const currentPage = window.location.pathname.split('/').pop() || 'overview.html';

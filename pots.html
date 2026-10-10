@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pots — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/pots.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -30,18 +31,85 @@
       <div class="page-header">
         <div>
           <h1>Pots</h1>
-          <p class="page-header__sub">Save for what matters, Small steps, real progress. — built in Module 3.</p>
+          <p class="page-header__sub">Set money aside for a goal - Save for what matters, Small steps, real progress.</p>
         </div>
+        <button class="btn btn--primary" id="open-create-pot">+ New pot</button>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Create savings pots and track progress automatically.
+      <div class="no-accounts-notice" id="no-accounts-notice" hidden>
+        You need an account before you can create a pot.
+        <a href="accounts.html">Create one on the Accounts page →</a>
+      </div>
+
+      <div class="pot-grid" id="pot-grid"></div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <strong>No pots yet</strong>
+        Create a savings goal to start setting money aside.
       </div>
     </main>
   </div>
 
+  <!-- Create pot modal -->
+  <div class="modal-overlay" id="create-pot-modal" hidden>
+    <div class="modal">
+      <h2>New pot</h2>
+      <form id="create-pot-form" novalidate>
+        <div class="field" id="field-pot-name">
+          <label for="pot-name">Goal name</label>
+          <input type="text" id="pot-name" placeholder="e.g. Vacation" autocomplete="off" />
+          <span class="field__error">Give this pot a name.</span>
+        </div>
+
+        <div class="field" id="field-pot-goal">
+          <label for="pot-goal">Target amount</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="pot-goal" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter an amount greater than 0.</span>
+        </div>
+
+        <div class="field" id="field-pot-account">
+          <label for="pot-account">Money comes from</label>
+          <select id="pot-account"></select>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-create-pot">Cancel</button>
+          <button type="submit" class="btn btn--primary">Create pot</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add / withdraw money modal -->
+  <div class="modal-overlay" id="pot-funds-modal" hidden>
+    <div class="modal">
+      <h2 id="pot-funds-title">Add money</h2>
+      <form id="pot-funds-form" novalidate>
+        <div class="field" id="field-pot-funds-amount">
+          <label for="pot-funds-amount">Amount</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="pot-funds-amount" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter a valid amount.</span>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-pot-funds">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="save-pot-funds">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/data/storage.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/data/pots.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/pages/pots.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

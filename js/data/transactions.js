@@ -1,6 +1,10 @@
-/*
+/* ==========================================================================
    MoneyMap — transactions.js (data layer)
-   */
+   A Transaction is the only place the user manually enters money data.
+   Every transaction is linked to an Account, and adding, editing, or
+   deleting one automatically updates that account's balance — the user
+   never edits a balance number directly (see accounts.js).
+   ========================================================================== */
 
 const TRANSACTIONS_KEY = 'transactions';
 
@@ -20,9 +24,9 @@ function getTransactionsByCategory(category) {
   return getTransactions().filter((t) => t.category === category);
 }
 
-/*
- Add a transaction and apply its effect on the linked account's balance.
- type is 'income' (adds to the account) or 'expense' (subtracts).
+/**
+ * Add a transaction and apply its effect on the linked account's balance.
+ * type is 'income' (adds to the account) or 'expense' (subtracts).
  */
 function addTransaction({ name, type, amount, category, accountId, date }) {
   const account = getAccountById(accountId);
@@ -48,10 +52,10 @@ function addTransaction({ name, type, amount, category, accountId, date }) {
 }
 
 /**
- Update a transaction. The old amount is un-applied from its account
- first, then the new amount is applied — so editing a $20 expense into
- a $50 expense correctly deducts the extra $30, even if the account
- changed too.
+ * Update a transaction. The old amount is un-applied from its account
+ * first, then the new amount is applied — so editing a $20 expense into
+ * a $50 expense correctly deducts the extra $30, even if the account
+ * changed too.
  */
 function updateTransaction(id, updates) {
   const transactions = getTransactions();

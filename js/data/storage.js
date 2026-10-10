@@ -1,11 +1,16 @@
-/*
+/* ==========================================================================
    MoneyMap — storage.js
-   */
+   Thin wrapper around LocalStorage. Every data module (accounts.js,
+   transactions.js, budgets.js, ...) reads and writes through these
+   functions only — nothing else in the app should call localStorage
+   directly. That's what keeps every page in sync.
+   ========================================================================== */
 
 const STORAGE_PREFIX = 'moneymap_';
 
-/*
- Read a collection (array of objects) from LocalStorage.
+/**
+ * Read a collection (array of objects) from LocalStorage.
+ * Always returns an array, even if nothing has been saved yet.
  */
 function readCollection(key) {
   try {
@@ -17,8 +22,8 @@ function readCollection(key) {
   }
 }
 
-/*
- Overwrite a collection in LocalStorage.
+/**
+ * Overwrite a collection in LocalStorage.
  */
 function writeCollection(key, data) {
   try {
@@ -30,17 +35,17 @@ function writeCollection(key, data) {
   }
 }
 
-/*
- Generate a short, unique id for a new record.
- e.g. "acc_l3f9k2a1"
+/**
+ * Generate a short, unique id for a new record.
+ * e.g. "acc_l3f9k2a1"
  */
 function generateId(prefix) {
   return `${prefix}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
 }
 
-/*
- Wipe every MoneyMap key from LocalStorage (used by Settings > Reset data).
-*/
+/**
+ * Wipe every MoneyMap key from LocalStorage (used by Settings > Reset data).
+ */
 function resetAllData() {
   Object.keys(localStorage)
     .filter((k) => k.startsWith(STORAGE_PREFIX))

@@ -1,7 +1,7 @@
-/*
+/* ==========================================================================
    MoneyMap — layout.css
    Sidebar nav + page shell
-  */
+   ========================================================================== */
 
 .app-shell {
   display: grid;
@@ -117,11 +117,11 @@
   margin-bottom: var(--space-2);
 }
 
-/* 
+/* ==========================================================================
    Responsive breakpoints
    860px  — sidebar collapses to a top bar (tablet / small laptop)
    480px  — tighter spacing + single-column layouts (phones)
-  */
+   ========================================================================== */
 
 @media (max-width: 860px) {
   .app-shell {
@@ -165,6 +165,10 @@
     border-bottom-color: var(--accent);
   }
 
+  .sidebar__footer {
+    display: none;
+  }
+
   .main {
     padding: var(--space-5);
   }
@@ -177,6 +181,10 @@
 @media (max-width: 480px) {
   .main {
     padding: var(--space-4);
+  }
+
+  .sidebar__brand img {
+    max-width: 68px;
   }
 
   .sidebar__nav {
@@ -202,9 +210,5 @@
   .placeholder {
     padding: var(--space-5);
     max-width: none;
-  }
-
-  .sidebar__brand img {
-    max-width: 68px;
   }
 }

@@ -1,6 +1,9 @@
-/* 
+/* ==========================================================================
    MoneyMap — transactions.js (page logic)
-   */
+   Renders the table, wires up search/filter/sort, and the add/edit modal.
+   All balance math happens in js/data/transactions.js — this file only
+   handles what the user sees and clicks.
+   ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
   const tableBody = document.getElementById('txn-table-body');

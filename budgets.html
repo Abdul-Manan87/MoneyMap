@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Budgets — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/budgets.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -30,18 +31,57 @@
       <div class="page-header">
         <div>
           <h1>Budgets</h1>
-          <p class="page-header__sub">Set a limit. Stay under it. — built in Module 3.</p>
+          <p class="page-header__sub">Set a limit per category — Know before you overspend.</p>
         </div>
+        <button class="btn btn--primary" id="open-create-budget">+ New budget</button>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Budget usage is calculated automatically from your transactions.
+      <div class="budget-grid" id="budget-grid"></div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <strong>No budgets yet</strong>
+        Set a spending limit for a category to start tracking it here.
       </div>
     </main>
   </div>
 
+  <!-- Create / edit budget modal -->
+  <div class="modal-overlay" id="budget-modal" hidden>
+    <div class="modal">
+      <h2 id="budget-modal-title">New budget</h2>
+      <form id="budget-form" novalidate>
+        <input type="hidden" id="budget-id" />
+
+        <div class="field" id="field-budget-category">
+          <label for="budget-category">Category</label>
+          <select id="budget-category"></select>
+        </div>
+
+        <div class="field" id="field-budget-limit">
+          <label for="budget-limit">Monthly limit</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="budget-limit" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter an amount greater than 0.</span>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-budget">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="save-budget">Create budget</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/data/storage.js"></script>
+  <script src="js/data/categories.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/data/transactions.js"></script>
+  <script src="js/data/budgets.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/pages/budgets.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
