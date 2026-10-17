@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recurring Bills — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/bills.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -30,18 +31,79 @@
       <div class="page-header">
         <div>
           <h1>Recurring Bills</h1>
-          <p class="page-header__sub">Track repeating payments — built in Module 4.</p>
+          <p class="page-header__sub">Never miss a due date again.</p>
         </div>
+        <button class="btn btn--primary" id="open-create-bill">+ New bill</button>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Bill status updates automatically based on todays date.
+      <div class="no-accounts-notice" id="no-accounts-notice" hidden>
+        You need an account before you can add a bill.
+        <a href="accounts.html">Create one on the Accounts page →</a>
+      </div>
+
+      <div class="bill-list" id="bill-list"></div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <strong>No bills yet</strong>
+        Add a recurring bill to start tracking its due date automatically.
       </div>
     </main>
   </div>
 
+  <!-- Create / edit bill modal -->
+  <div class="modal-overlay" id="bill-modal" hidden>
+    <div class="modal">
+      <h2 id="bill-modal-title">New bill</h2>
+      <form id="bill-form" novalidate>
+        <input type="hidden" id="bill-id" />
+
+        <div class="field" id="field-bill-name">
+          <label for="bill-name">Bill name</label>
+          <input type="text" id="bill-name" placeholder="e.g. Rent" autocomplete="off" />
+          <span class="field__error">Give this bill a name.</span>
+        </div>
+
+        <div class="field" id="field-bill-amount">
+          <label for="bill-amount">Amount</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="bill-amount" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter an amount greater than 0.</span>
+        </div>
+
+        <div class="field" id="field-bill-day">
+          <label for="bill-day">Due day of month</label>
+          <input type="number" id="bill-day" placeholder="e.g. 1" min="1" max="31" step="1" />
+          <span class="field__error">Enter a day between 1 and 31.</span>
+        </div>
+
+        <div class="field" id="field-bill-category">
+          <label for="bill-category">Category</label>
+          <select id="bill-category"></select>
+        </div>
+
+        <div class="field" id="field-bill-account">
+          <label for="bill-account">Paid from</label>
+          <select id="bill-account"></select>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-bill">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="save-bill">Create bill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/data/storage.js"></script>
+  <script src="js/data/categories.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/data/transactions.js"></script>
+  <script src="js/data/bills.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/pages/bills.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

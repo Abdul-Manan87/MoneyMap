@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Overview — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/overview.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -24,24 +25,75 @@
         <li><a class="sidebar__link" href="analytics.html">Analytics</a></li>
         <li><a class="sidebar__link" href="settings.html">Settings</a></li>
       </ul>
+      <div class="sidebar__footer">
+        Module 4 of 5
+      </div>
     </nav>
 
     <main class="main">
       <div class="page-header">
         <div>
           <h1>Overview</h1>
-          <p class="page-header__sub">Your financial snapshot — built in Module 4.</p>
+          <p class="page-header__sub">Everything below is pulled live from Accounts, Transactions, Budgets, Pots, and Bills — nothing here is typed in.</p>
         </div>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Overview pulls totals from Accounts, Budgets, Pots, and Bills automatically.
+      <div class="summary-strip">
+        <span class="summary-strip__label">Total across all accounts</span>
+        <span class="summary-strip__value num" id="total-balance">$0.00</span>
+      </div>
+
+      <div class="overview-grid">
+
+        <section class="panel overview-panel">
+          <div class="overview-panel__head">
+            <h2>Recent transactions</h2>
+            <a href="transactions.html">View all →</a>
+          </div>
+          <ul class="mini-list" id="recent-transactions"></ul>
+          <p class="overview-panel__empty" id="txn-empty" hidden>No transactions logged yet.</p>
+        </section>
+
+        <section class="panel overview-panel">
+          <div class="overview-panel__head">
+            <h2>Upcoming bills</h2>
+            <a href="bills.html">View all →</a>
+          </div>
+          <ul class="mini-list" id="upcoming-bills"></ul>
+          <p class="overview-panel__empty" id="bills-empty" hidden>No bills tracked yet.</p>
+        </section>
+
+        <section class="panel overview-panel">
+          <div class="overview-panel__head">
+            <h2>Budget progress</h2>
+            <a href="budgets.html">View all →</a>
+          </div>
+          <div class="mini-progress-list" id="budget-progress"></div>
+          <p class="overview-panel__empty" id="budgets-empty" hidden>No budgets set yet.</p>
+        </section>
+
+        <section class="panel overview-panel">
+          <div class="overview-panel__head">
+            <h2>Savings pots</h2>
+            <a href="pots.html">View all →</a>
+          </div>
+          <div class="mini-progress-list" id="pots-progress"></div>
+          <p class="overview-panel__empty" id="pots-empty" hidden>No pots created yet.</p>
+        </section>
+
       </div>
     </main>
   </div>
 
   <script src="js/data/storage.js"></script>
+  <script src="js/data/categories.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/data/transactions.js"></script>
+  <script src="js/data/budgets.js"></script>
+  <script src="js/data/pots.js"></script>
+  <script src="js/data/bills.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/pages/overview.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

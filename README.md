@@ -13,7 +13,7 @@ See `css/`, `js/data/` (data layer), `js/pages/` (per-page UI logic), `js/utils/
 -  Module 1 — Project structure, shared data layer (`storage.js`), Accounts (create accounts, add money, view balances)
 -  Module 2 — Transactions (linked to accounts, auto-updates balance on add/edit/delete, search/filter/sort)
 -  Module 3 — Budgets (limits with live spend tracking) & Pots (savings goals linked to an account)
--  Module 4 — Recurring Bills & Overview dashboard
+-  Module 4 — Recurring Bills (status computed from today's date, "Pay now" logs a real transaction) & Overview dashboard (aggregates every other module live)
 -  Module 5 — Analytics, Settings, polish & deploy
 
 ## Running it
