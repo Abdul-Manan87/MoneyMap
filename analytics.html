@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Analytics — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/analytics.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -30,18 +31,56 @@
       <div class="page-header">
         <div>
           <h1>Analytics</h1>
-          <p class="page-header__sub">See where your money actually goes. — built in Module 5.</p>
+          <p class="page-header__sub">You spend, MoneyMap Visualize and Analyze.</p>
         </div>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Spending trends and category breakdowns.
+      <div class="stat-row">
+        <div class="stat-card">
+          <span class="stat-card__label">Spent this month</span>
+          <span class="stat-card__value num" id="stat-this-month">$0.00</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__label">Spent last month</span>
+          <span class="stat-card__value num" id="stat-last-month">$0.00</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__label">Change vs last month</span>
+          <span class="stat-card__value num" id="stat-change">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__label">Top category this month</span>
+          <span class="stat-card__value num" id="stat-top-category">—</span>
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <section class="panel chart-panel">
+          <h2>Spending by category <span class="chart-panel__sub">this month</span></h2>
+          <div class="chart-canvas-wrap chart-canvas-wrap--donut">
+            <canvas id="category-chart"></canvas>
+          </div>
+          <p class="chart-empty" id="category-chart-empty" hidden>No expenses logged this month yet.</p>
+        </section>
+
+        <section class="panel chart-panel">
+          <h2>Income vs expenses <span class="chart-panel__sub">last 6 months</span></h2>
+          <div class="chart-canvas-wrap">
+            <canvas id="trend-chart"></canvas>
+          </div>
+          <p class="chart-empty" id="trend-chart-empty" hidden>No transactions logged yet.</p>
+        </section>
       </div>
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="js/data/storage.js"></script>
+  <script src="js/data/categories.js"></script>
+  <script src="js/data/accounts.js"></script>
+  <script src="js/data/transactions.js"></script>
+  <script src="js/utils/formatCurrency.js"></script>
+  <script src="js/pages/analytics.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

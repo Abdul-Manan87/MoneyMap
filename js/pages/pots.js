@@ -1,8 +1,8 @@
 /* ==========================================================================
    MoneyMap — pots.js (page logic)
-   Renders pot cards with live progress bars. Adding/withdrawing money
-   always goes through js/data/pots.js, which also updates the linked
-   account — this file only handles what's on screen.
+   Renders pot cards with live progress bars and an expandable activity
+   history. Add / withdraw / spend all go through js/data/pots.js — this
+   file only handles what's on screen.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,8 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const fundsAmountInput = document.getElementById('pot-funds-amount');
   const fundsSaveBtn = document.getElementById('save-pot-funds');
 
+  const spendModal = document.getElementById('spend-pot-modal');
+  const spendForm = document.getElementById('spend-pot-form');
+  const spendPotName = document.getElementById('spend-pot-name');
+  const spendNameInput = document.getElementById('spend-name');
+  const spendCategorySelect = document.getElementById('spend-category');
+  const spendAmountInput = document.getElementById('spend-amount');
+  const spendAvailable = document.getElementById('spend-available');
+
   let activePotId = null;
   let fundsMode = 'add'; // 'add' | 'withdraw'
+  const expandedPots = new Set(); // which pot cards have activity open
 
   render();
 
@@ -38,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === fundsModal) fundsModal.hidden = true;
   });
   fundsForm.addEventListener('submit', handleFundsSubmit);
+
+  document.getElementById('cancel-spend-pot').addEventListener('click', () => (spendModal.hidden = true));
+  spendModal.addEventListener('click', (e) => {
+    if (e.target === spendModal) spendModal.hidden = true;
+  });
+  spendForm.addEventListener('submit', handleSpendSubmit);
 
   function refreshAccountGate() {
     const hasAccounts = getAccounts().length > 0;
@@ -59,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const account = getAccountById(pot.accountId);
     const percent = getPotProgress(pot);
     const isComplete = pot.saved >= pot.goal && pot.goal > 0;
+    const isOpen = expandedPots.has(pot.id);
 
     const card = document.createElement('div');
     card.className = 'pot-card';
@@ -81,20 +97,59 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="pot-card__actions">
         <button class="btn btn--primary" data-action="add">+ Add money</button>
         <button class="btn btn--ghost" data-action="withdraw">Withdraw</button>
+        <button class="btn btn--ghost" data-action="spend">Spend</button>
       </div>
+      <button type="button" class="pot-card__toggle" data-action="toggle-activity">
+        ${isOpen ? 'Hide activity ▴' : 'View activity ▾'}
+      </button>
+      ${isOpen ? buildActivityHtml(pot.id) : ''}
     `;
 
     card.querySelector('[data-action="add"]').addEventListener('click', () => openFundsModal(pot, 'add'));
     card.querySelector('[data-action="withdraw"]').addEventListener('click', () => openFundsModal(pot, 'withdraw'));
+    card.querySelector('[data-action="spend"]').addEventListener('click', () => openSpendModal(pot));
+    card.querySelector('[data-action="toggle-activity"]').addEventListener('click', () => {
+      if (expandedPots.has(pot.id)) expandedPots.delete(pot.id);
+      else expandedPots.add(pot.id);
+      render();
+    });
     card.querySelector('[data-action="delete"]').addEventListener('click', () => {
       const warn = pot.saved > 0 ? ` The ${formatCurrency(pot.saved)} saved will be returned to ${account ? account.name : 'its account'}.` : '';
       if (confirm(`Delete "${pot.name}"?${warn}`)) {
         deletePot(pot.id);
+        expandedPots.delete(pot.id);
         render();
       }
     });
 
     return card;
+  }
+
+  function buildActivityHtml(potId) {
+    const entries = getPotActivity(potId);
+    if (entries.length === 0) {
+      return '<div class="pot-activity"><p class="pot-activity__empty">No activity yet.</p></div>';
+    }
+
+    const ACTION_LABEL = { add: 'Added money', withdraw: 'Withdrew to account', spend: null };
+    const rows = entries
+      .map((e) => {
+        const isOut = e.type === 'withdraw' || e.type === 'spend';
+        const label = e.type === 'spend' ? escapeHtml(e.name) : ACTION_LABEL[e.type];
+        const meta = e.type === 'spend' && e.category ? escapeHtml(e.category) : formatDate(e.date);
+        return `
+          <div class="pot-activity__row">
+            <span class="pot-activity__label">
+              <span class="pot-activity__name">${label}</span>
+              <span class="pot-activity__date">${e.type === 'spend' ? `${meta} · ${formatDate(e.date)}` : meta}</span>
+            </span>
+            <span class="pot-activity__amount ${isOut ? 'out' : 'in'} num">${isOut ? '−' : '+'}${formatCurrency(e.amount)}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    return `<div class="pot-activity">${rows}</div>`;
   }
 
   // ---- Create pot ----
@@ -178,6 +233,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fundsModal.hidden = true;
     render();
+  }
+
+  // ---- Spend from pot ----
+  function openSpendModal(pot) {
+    activePotId = pot.id;
+    spendPotName.textContent = pot.name;
+    spendForm.reset();
+    ['field-spend-name', 'field-spend-amount'].forEach((id) => setFieldError(document.getElementById(id), null));
+
+    spendCategorySelect.innerHTML = '';
+    EXPENSE_CATEGORIES.forEach((cat) => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      spendCategorySelect.appendChild(opt);
+    });
+
+    spendAvailable.textContent = `Available in this pot: ${formatCurrency(pot.saved)}`;
+    spendAmountInput.max = pot.saved;
+    spendModal.hidden = false;
+    spendNameInput.focus();
+  }
+
+  function handleSpendSubmit(e) {
+    e.preventDefault();
+    const nameField = document.getElementById('field-spend-name');
+    const amountField = document.getElementById('field-spend-amount');
+    const pot = getPotById(activePotId);
+
+    let valid = true;
+    if (!isRequired(spendNameInput.value)) {
+      setFieldError(nameField, 'Give this a name.');
+      valid = false;
+    } else setFieldError(nameField, null);
+
+    if (!isPositiveNumber(spendAmountInput.value)) {
+      setFieldError(amountField, 'Enter an amount greater than 0.');
+      valid = false;
+    } else if (Number(spendAmountInput.value) > pot.saved) {
+      setFieldError(amountField, `Only ${formatCurrency(pot.saved)} available in this pot.`);
+      valid = false;
+    } else setFieldError(amountField, null);
+
+    if (!valid) return;
+
+    spendFromPot(activePotId, {
+      name: spendNameInput.value,
+      amount: spendAmountInput.value,
+      category: spendCategorySelect.value,
+    });
+
+    expandedPots.add(activePotId); // so the new entry is visible right away
+    spendModal.hidden = true;
+    render();
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 
   function escapeHtml(str) {

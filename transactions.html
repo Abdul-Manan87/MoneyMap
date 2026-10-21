@@ -31,7 +31,7 @@
       <div class="page-header">
         <div>
           <h1>Transactions</h1>
-          <p class="page-header__sub">Log income and expanses</p>
+          <p class="page-header__sub">Log Income and Expanses - MoneyMap handles your transactions.</p>
         </div>
         <button class="btn btn--primary" id="open-add-transaction">+ Add transaction</button>
       </div>
@@ -123,6 +123,8 @@
           <input type="date" id="txn-date" />
         </div>
 
+        <div class="budget-warning" id="budget-warning" hidden></div>
+
         <div class="modal__actions">
           <button type="button" class="btn btn--ghost" id="cancel-txn">Cancel</button>
           <button type="submit" class="btn btn--primary" id="save-txn">Add transaction</button>
@@ -135,6 +137,7 @@
   <script src="js/data/categories.js"></script>
   <script src="js/data/accounts.js"></script>
   <script src="js/data/transactions.js"></script>
+  <script src="js/data/budgets.js"></script>
   <script src="js/utils/formatCurrency.js"></script>
   <script src="js/utils/validators.js"></script>
   <script src="js/pages/transactions.js"></script>

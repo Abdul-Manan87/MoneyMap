@@ -31,7 +31,7 @@
       <div class="page-header">
         <div>
           <h1>Pots</h1>
-          <p class="page-header__sub">Set money aside for a goal - Save for what matterss, Small steps, Real progress.</p>
+          <p class="page-header__sub">Set money aside for a goal -- Save for what matters, Small steps, Real progress.</p>
         </div>
         <button class="btn btn--primary" id="open-create-pot">+ New pot</button>
       </div>
@@ -104,7 +104,43 @@
     </div>
   </div>
 
+  <!-- Spend from pot modal -->
+  <div class="modal-overlay" id="spend-pot-modal" hidden>
+    <div class="modal">
+      <h2>Spend from <span id="spend-pot-name"></span></h2>
+      <form id="spend-pot-form" novalidate>
+        <div class="field" id="field-spend-name">
+          <label for="spend-name">What was it for?</label>
+          <input type="text" id="spend-name" placeholder="e.g. Ice cream" autocomplete="off" />
+          <span class="field__error">Give this a name.</span>
+        </div>
+
+        <div class="field" id="field-spend-category">
+          <label for="spend-category">Category</label>
+          <select id="spend-category"></select>
+        </div>
+
+        <div class="field" id="field-spend-amount">
+          <label for="spend-amount">Amount</label>
+          <div class="field__prefix-wrap">
+            <span>$</span>
+            <input type="number" id="spend-amount" placeholder="0.00" min="0.01" step="0.01" />
+          </div>
+          <span class="field__error">Enter a valid amount.</span>
+        </div>
+
+        <p class="pot-spend-balance" id="spend-available"></p>
+
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="cancel-spend-pot">Cancel</button>
+          <button type="submit" class="btn btn--primary">Spend</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/data/storage.js"></script>
+  <script src="js/data/categories.js"></script>
   <script src="js/data/accounts.js"></script>
   <script src="js/data/pots.js"></script>
   <script src="js/utils/formatCurrency.js"></script>

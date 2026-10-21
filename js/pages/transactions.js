@@ -27,8 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const dateInput = document.getElementById('txn-date');
   const saveBtn = document.getElementById('save-txn');
   const typeButtons = document.querySelectorAll('.type-toggle__option');
+  const budgetWarning = document.getElementById('budget-warning');
 
   let currentType = 'expense';
+  let budgetWarningAcknowledged = false;
 
   init();
 
@@ -49,6 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     typeButtons.forEach((btn) => {
       btn.addEventListener('click', () => setType(btn.dataset.type));
+    });
+
+    // Any change after a warning was shown should re-check on next submit,
+    // not silently ride through on the "confirmed" state from before.
+    [amountInput, categorySelect, accountSelect].forEach((el) => {
+      el.addEventListener('input', resetBudgetWarning);
+      el.addEventListener('change', resetBudgetWarning);
     });
 
     form.addEventListener('submit', handleSubmit);
@@ -150,6 +159,13 @@ document.addEventListener('DOMContentLoaded', () => {
     currentType = type;
     typeButtons.forEach((btn) => btn.classList.toggle('is-active', btn.dataset.type === type));
     populateCategorySelect(type);
+    resetBudgetWarning();
+  }
+
+  function resetBudgetWarning() {
+    budgetWarningAcknowledged = false;
+    budgetWarning.hidden = true;
+    saveBtn.textContent = idField.value ? 'Save changes' : 'Add transaction';
   }
 
   // ---- Modal open/close ----
@@ -217,6 +233,30 @@ document.addEventListener('DOMContentLoaded', () => {
       setFieldError(accountField, null);
     }
     if (!valid) return;
+
+    // Budget check — only for expenses, only if that category has a budget.
+    if (currentType === 'expense' && !budgetWarningAcknowledged) {
+      const budget = getBudgetByCategory(categorySelect.value);
+      if (budget) {
+        const editingOriginal = idField.value ? getTransactionById(idField.value) : null;
+        let alreadySpent = calculateSpent(categorySelect.value);
+        // If editing a transaction that already counted toward this category
+        // this month, back it out first so we don't double-count it.
+        if (editingOriginal && editingOriginal.category === categorySelect.value && editingOriginal.type === 'expense') {
+          alreadySpent = roundMoney(alreadySpent - editingOriginal.amount);
+        }
+        const projected = roundMoney(alreadySpent + Number(amountInput.value));
+
+        if (projected > budget.limit) {
+          const over = roundMoney(projected - budget.limit);
+          budgetWarning.textContent = `⚠ This will put you ${formatCurrency(over)} over your ${categorySelect.value} budget (${formatCurrency(projected)} of ${formatCurrency(budget.limit)}). Click "Add anyway" to continue.`;
+          budgetWarning.hidden = false;
+          budgetWarningAcknowledged = true;
+          saveBtn.textContent = idField.value ? 'Save anyway' : 'Add anyway';
+          return; // hold — wait for the second, explicit click
+        }
+      }
+    }
 
     const payload = {
       name: nameInput.value,

@@ -1,0 +1,73 @@
+/* MoneyMap — analytics.css (page-specific) */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stat-card__label {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.stat-card__value {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.stat-card__value.is-up {
+  color: var(--negative);
+}
+
+.stat-card__value.is-down {
+  color: var(--accent);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-5);
+}
+
+.chart-panel h2 {
+  font-size: 16px;
+  margin-bottom: var(--space-4);
+}
+
+.chart-panel__sub {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  height: 260px;
+}
+
+.chart-canvas-wrap--donut {
+  height: 240px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.chart-empty {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 13px;
+  padding: var(--space-6) 0;
+}

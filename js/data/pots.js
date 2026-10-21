@@ -1,9 +1,16 @@
 /* ==========================================================================
    MoneyMap — pots.js (data layer)
-   A Pot is a savings goal — money set aside from a specific Account.
-   Adding to a pot pulls money out of that account; withdrawing puts it
-   back. Progress is always calculated from pot.saved vs pot.goal, never
-   typed in directly.
+   A Pot works like a small separate account: money moves into it from an
+   Account, and from then on you can spend directly from the pot itself
+   (like ice cream from a Vacation pot) without touching your main
+   account again. Every add, withdraw, and spend is logged in the pot's
+   own activity history — saved is always just the sum of that history,
+   never edited directly.
+
+   Pot spending is intentionally NOT logged as a normal Transaction and
+   does NOT affect Budgets — money already left your everyday budget the
+   moment it was added to the pot, so spending it again from the pot
+   would double-count it.
    ========================================================================== */
 
 const POTS_KEY = 'pots';
@@ -27,6 +34,7 @@ function createPot({ name, goal, accountId }) {
     goal: Math.abs(Number(goal)) || 0,
     saved: 0,
     accountId,
+    activity: [],
     createdAt: new Date().toISOString(),
   };
 
@@ -45,6 +53,7 @@ function addToPot(potId, amount) {
 
   spendFromAccount(pot.accountId, amount);
   pot.saved = roundMoney(pot.saved + Number(amount));
+  logActivity(pot, { type: 'add', name: 'Added money', amount: Number(amount) });
   writeCollection(POTS_KEY, pots);
   return pot;
 }
@@ -62,6 +71,27 @@ function withdrawFromPot(potId, amount) {
 
   addMoney(pot.accountId, amt);
   pot.saved = roundMoney(pot.saved - amt);
+  logActivity(pot, { type: 'withdraw', name: 'Withdrew to account', amount: amt });
+  writeCollection(POTS_KEY, pots);
+  return pot;
+}
+
+/**
+ * Spend directly from the pot — e.g. ice cream from a Vacation pot.
+ * This never touches the linked account (the money already left it when
+ * it was added to the pot) and is never logged as a regular Transaction.
+ * Returns null if the pot doesn't have enough saved to cover it.
+ */
+function spendFromPot(potId, { name, amount, category }) {
+  const pots = getPots();
+  const pot = pots.find((p) => p.id === potId);
+  if (!pot) return null;
+
+  const amt = Number(amount) || 0;
+  if (amt <= 0 || amt > pot.saved) return null;
+
+  pot.saved = roundMoney(pot.saved - amt);
+  logActivity(pot, { type: 'spend', name: name.trim(), category, amount: amt });
   writeCollection(POTS_KEY, pots);
   return pot;
 }
@@ -82,8 +112,30 @@ function deletePot(potId) {
   writeCollection(POTS_KEY, pots.filter((p) => p.id !== potId));
 }
 
+/**
+ * A pot's activity, newest first — its own mini transaction history.
+ */
+function getPotActivity(potId) {
+  const pot = getPotById(potId);
+  if (!pot || !pot.activity) return [];
+  return [...pot.activity].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
+}
+
 function getPotProgress(pot) {
   return pot.goal > 0 ? Math.min(100, roundMoney((pot.saved / pot.goal) * 100)) : 0;
+}
+
+function logActivity(pot, { type, name, category, amount }) {
+  if (!pot.activity) pot.activity = [];
+  pot.activity.push({
+    id: generateId('act'),
+    type, // 'add' | 'withdraw' | 'spend'
+    name,
+    category: category || null,
+    amount: roundMoney(amount),
+    date: new Date().toISOString().slice(0, 10),
+    createdAt: new Date().toISOString(),
+  });
 }
 
 function roundMoney(value) {

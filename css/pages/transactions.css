@@ -154,6 +154,17 @@
   color: var(--accent);
 }
 
+/* ---- Budget-exceeded warning ---- */
+.budget-warning {
+  background: #f7ecd6;
+  color: #a67624;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  margin-bottom: var(--space-4);
+  line-height: 1.4;
+}
+
 @media (max-width: 480px) {
   .toolbar {
     flex-direction: column;

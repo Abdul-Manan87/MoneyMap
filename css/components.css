@@ -46,6 +46,15 @@
   background: var(--negative-soft);
 }
 
+.btn--danger {
+  background: var(--negative);
+  color: #ffffff;
+}
+
+.btn--danger:hover {
+  background: color-mix(in srgb, var(--negative) 85%, black);
+}
+
 /* ---- Form fields ---- */
 .field {
   display: flex;

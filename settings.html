@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings — MoneyMap</title>
-  <link rel="icon" href="assets/images/MoneyMap_logo.png" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages/settings.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -30,18 +31,58 @@
       <div class="page-header">
         <div>
           <h1>Settings</h1>
-          <p class="page-header__sub">Make MoneyMap yours — built in Module 5.</p>
+          <p class="page-header__sub">Preferences -- Make MoneyMap yours.</p>
         </div>
       </div>
 
-      <div class="placeholder">
-        <strong>Not built yet</strong>
-        Currency and data reset options.
-      </div>
+      <section class="panel settings-panel">
+        <h2>Currency</h2>
+        <p class="settings-panel__desc">Every amount across MoneyMap is displayed in this currency.</p>
+        <div class="field" style="max-width:280px;">
+          <label for="currency-select">Display currency</label>
+          <select id="currency-select">
+            <option value="USD">USD — US Dollar ($)</option>
+            <option value="EUR">EUR — Euro (€)</option>
+            <option value="GBP">GBP — British Pound (£)</option>
+            <option value="PKR">PKR — Pakistani Rupee (₨)</option>
+            <option value="INR">INR — Indian Rupee (₹)</option>
+            <option value="AED">AED — UAE Dirham</option>
+            <option value="AUD">AUD — Australian Dollar</option>
+            <option value="CAD">CAD — Canadian Dollar</option>
+          </select>
+        </div>
+        <span class="save-indicator" id="save-indicator">Saved ✓</span>
+      </section>
+
+      <section class="panel settings-panel settings-panel--danger">
+        <h2>Danger zone</h2>
+        <p class="settings-panel__desc">Permanently deletes every account, transaction, budget, pot, and bill. This cannot be undone.</p>
+        <button class="btn btn--danger" id="open-reset">Reset all data</button>
+      </section>
     </main>
   </div>
 
+  <!-- Reset confirmation modal -->
+  <div class="modal-overlay" id="reset-modal" hidden>
+    <div class="modal">
+      <h2>Reset all data?</h2>
+      <p class="settings-panel__desc" style="margin-bottom:var(--space-4);">
+        This permanently deletes everything in MoneyMap. Type <strong>RESET</strong> below to confirm.
+      </p>
+      <div class="field" id="field-reset-confirm">
+        <input type="text" id="reset-confirm-input" placeholder="Type RESET" autocomplete="off" />
+        <span class="field__error">Type RESET exactly to confirm.</span>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="cancel-reset">Cancel</button>
+        <button type="button" class="btn btn--danger" id="confirm-reset">Delete everything</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/data/storage.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/pages/settings.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
